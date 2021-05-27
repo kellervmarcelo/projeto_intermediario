@@ -20,8 +20,9 @@ route.get("/", async function (req, res) {
     //   console.log(c)
     // });
     return {
+      position: document.querySelector("#top20 tr td:nth-child(1)").innerHTML,
       lang: document.querySelector("#top20 tr td:nth-child(4)").innerHTML,
-      height: document.querySelector("#top20 tr td:nth-child(5)").innerHTML,
+      percent: document.querySelector("#top20 tr td:nth-child(5)").innerHTML,
       timestamp: Date.now(),
     };
   });
