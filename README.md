@@ -29,3 +29,6 @@ As repostas são em json
 ## Bibliotecas adicionais 
 ### Puppeteer (https://pptr.dev/)
 O Puppeteer é uma biblioteca do Node que fornece uma API de para controlar o Chrome ou o Chromium através do Protocolo do DevTools. Através dele é possível fazer o scraping de páginas da web.
+
+[Link para o repositório no github](https://github.com/kellervmarcelo/projeto_intermediario)
+[Link para o repositório no heroku](https://trabalho-intermediario-mkv.herokuapp.com/)
