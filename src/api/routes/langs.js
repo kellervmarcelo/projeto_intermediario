@@ -5,6 +5,7 @@ const puppeteer = require("puppeteer");
 route.get("/", async function (req, res) {
 
   const browser = await puppeteer.launch({
+    headless: true,
     args: [
       '--no-sandbox',
       '--disable-setuid-sandbox',

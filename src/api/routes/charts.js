@@ -7,6 +7,7 @@ route.get("/", async function (req, res) {
   const param = req.query;
 
   const browser = await puppeteer.launch({
+    headless: true,
     args: [
       '--no-sandbox',
       '--disable-setuid-sandbox',
