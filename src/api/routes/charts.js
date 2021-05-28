@@ -6,7 +6,12 @@ const puppeteer = require("puppeteer");
 route.get("/", async function (req, res) {
   const param = req.query;
 
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+    ],
+  });
   const page = await browser.newPage();
   await page.goto("https://www.billboard.com/charts/hot-100");
   await page.waitForSelector(".chart-list");
