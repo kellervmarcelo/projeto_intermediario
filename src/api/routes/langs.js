@@ -3,29 +3,28 @@ const route = express.Router();
 const puppeteer = require("puppeteer");
 
 route.get("/", async function (req, res) {
-  let langs = [];
 
-  const browser = await puppeteer.launch({ headless: false });
+  const browser = await puppeteer.launch();
   const page = await browser.newPage();
   await page.goto("https://www.tiobe.com/tiobe-index/");
 
   const list = await page.evaluate(() => {
-    const nodelist = document.querySelectorAll(
-      "#top20 tr td"
-    );
-    const linguagensList = [...nodelist];
-    console.log(linguagensList[1].innerHTML)
+    const positions = Array.from(document.querySelectorAll('#top20 tr td:nth-child(1)'))
+    const langs = Array.from(document.querySelectorAll('#top20 tr td:nth-child(4)'))
+    const percent = Array.from(document.querySelectorAll('#top20 tr td:nth-child(5)'))
     
-    return linguagensList.forEach(e => e)
-    // return {
-    //   position: document.querySelector("#top20 tr td:nth-child(1)").innerHTML,
-    //   lang: document.querySelector("#top20 tr td:nth-child(4)").innerHTML,
-    //   percent: document.querySelector("#top20 tr td:nth-child(5)").innerHTML,
-    //   timestamp: Date.now(),
-    // }
+    let lista = positions.map((e,i)=> {
+      return {
+        'position': e.innerHTML,
+        'lang': langs[i].innerHTML,
+        'percent': percent[i].innerHTML,
+        'timestamp': Date.now()
+      }
+    })
+    
+    return lista;
   });
-  //   await browser.close()
-  console.log(list);
+  await browser.close()
 
   res.json(list);
 });

@@ -1,34 +1,37 @@
-const express = require("express")
-const route = express.Router()
-const puppeteer = require('puppeteer')
+const e = require("express");
+const express = require("express");
+const route = express.Router();
+const puppeteer = require("puppeteer");
 
 route.get("/", async function (req, res) {
-  var query = req.query.consulta
+  const param = req.query;
 
-  const browser = await puppeteer.launch({headless: false});
+  const browser = await puppeteer.launch();
   const page = await browser.newPage();
   await page.goto("https://www.billboard.com/charts/hot-100");
+  await page.waitForSelector(".chart-list");
 
   const list = await page.evaluate(() => {
-    
-    const nodelist = document.querySelectorAll("#top20 tr td:nth-child(4)");
-    const nodelist2 = document.querySelectorAll("#top20 tr td:nth-child(5)");
-    const linguagens = [...nodelist];
-    const porcentagem = [...nodelist2];
+    const nodelist = Array.from(
+      document.querySelectorAll(".chart-element__information__song")
+    );
+    const nodelist2 = Array.from(
+      document.querySelectorAll(".chart-element__information__artist")
+    );
 
-    
-    
-    return {
-      'position': document.querySelector('.chart-element__rank__number').innerHTML,
-      'song': document.querySelector(".chart-element__information__song").innerHTML,
-      'artist': document.querySelector(".chart-element__information__artist").innerHTML,
-      timestamp: Date.now(),
-    };
+    var lista = nodelist2.map((e, i) => {
+      return {
+        song: e.innerHTML,
+        artist: nodelist[i].innerHTML,
+        timestamp: Date.now(),
+      };
+    });
+
+    return lista;
   });
-  
-  console.log(list);
 
+  await browser.close();
   res.json(list);
 });
 
-module.exports = route
+module.exports = route;

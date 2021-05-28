@@ -6,7 +6,7 @@ const routes = require('./api/routes/index');
 app.use('/api', routes)
 
 app.get('/', function(req, res){
-  res.send('Alo')
+  res.send('Api referente ao projeto intermediário de ppw2. Os endpoints são /api/charts e /api/langs')
 })
 
 app.get('*', function(req, res){
