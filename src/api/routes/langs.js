@@ -1,9 +1,12 @@
 const express = require("express");
 const route = express.Router();
 const puppeteer = require("puppeteer");
+const { param } = require("./charts");
 
 route.get("/", async function (req, res) {
 
+  const params = req.query.lang
+  
   const browser = await puppeteer.launch({
     headless: true,
     args: [
@@ -31,8 +34,18 @@ route.get("/", async function (req, res) {
     return lista;
   });
   await browser.close()
-
-  res.json(list);
+  
+  if(!params){
+    res.json(list);
+  } else {
+    const filtro = list.filter((i) =>{
+      if(i.lang.toLowerCase().split(' ').join('') === params){
+        return i;
+      }
+    })
+    res.json(filtro)
+  }
+  
 });
 
 module.exports = route;

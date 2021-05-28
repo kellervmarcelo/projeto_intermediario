@@ -4,7 +4,7 @@ const route = express.Router();
 const puppeteer = require("puppeteer");
 
 route.get("/", async function (req, res) {
-  const param = req.query;
+  const param = req.query.song;
 
   const browser = await puppeteer.launch({
     headless: true,
@@ -27,17 +27,27 @@ route.get("/", async function (req, res) {
 
     var lista = nodelist2.map((e, i) => {
       return {
-        song: e.innerHTML,
-        artist: nodelist[i].innerHTML,
+        song: nodelist[i].innerHTML,
+        artist: e.innerHTML,
         timestamp: Date.now(),
       };
     });
 
     return lista;
   });
-
   await browser.close();
-  res.json(list);
+  if(!param){
+    res.json(list);
+  } else{
+    const filtro = list.filter(i=>{
+      if(i.song.toLowerCase().split(" ").join("") === param){
+        return i
+      }
+    })
+    res.json(filtro)
+  }
+
+  
 });
 
 module.exports = route;
